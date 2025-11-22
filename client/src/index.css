@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "tailwindcss";
+
+
+body {
+  background-color: #F9F4EA;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+}
+
+:root {
+  --brand-color: #2b2927;
+}
+
+/* websites UI  */
+.heading-text {
+  color: #2b2927;
+}
+.heading-text-two{
+color: #443831aa;
+}
+.para-text{
+  color: #4a4a49
+}
+
+
+.button-bg{
+  background: #744e35fb;
+ 
+}
+
+.Ai-stylist-card{
+  background-color:#201505fb;
+}
+
+/* Responsive spacing — pushes image row down so CRUSE overlaps nicely */
+@media (min-width: 768px) {
+  .mt-60 {
+    margin-top: 16rem;
+    /* Adjust spacing between brand text and image row */
+  }
+}
+
+/* Makes CRUSE text extra large on XL screens */
+@media (min-width: 1280px) {
+  .text-\[220px\] {
+    font-size: 19rem !important;
+    /* Same as reference UI */
+  }
+}
+
+/* Prevent horizontal scrollbars caused by image rendering */
+img {
+  display: block;
+}
+
+/* Smooth fade or slide animation for small screen images */
+@keyframes slideImages {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-50%);
+  }
+
+  50% {
+    transform: translateX(-100%);
+  }
+
+  75% {
+    transform: translateX(-150%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
