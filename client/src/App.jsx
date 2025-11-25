@@ -14,6 +14,7 @@ import CartSidebar from './Components/CartSidebar'
 import ProductDetails from './Pages/ProductDetails'
 import ContactUs from './Pages/ContactUs'
 import AiStylistPage from './Pages/AiStylistPage'
+import AiTestClient from './Pages/AiTestClient'
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/contact-us" element={<ContactUs/>} />
-          <Route path="/ai-stylist" element={<AiStylistPage/>} />
+          <Route path="/ai-stylist" element={<AiTestClient/>} />
 
         </Routes>
 
