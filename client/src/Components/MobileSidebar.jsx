@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { X, User, ChevronRight } from "lucide-react";
+import { X, User, ChevronRight, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function MobileSidebar({ open, onClose, isLoggedIn, username }) {

@@ -119,7 +119,7 @@ export default function CruseNavbar({ isLoggedIn = false, username = "User" }) {
                 </Link>
               ) : (
                 <Link
-                  to="/login"
+                  to="/sign-up"
                   className="px-4 py-2 rounded-full bg-black text-white text-sm hover:bg-gray-800 transition"
                 >
                   Login
