@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import api from "../api/api";
-import { Banners } from "../index.js";
+import api from "../../api/api.js";
+import { Banners } from "../../index.js";
 import { Link } from "react-router-dom";
-export default function Dress() {
+export default function Bags() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -15,13 +15,14 @@ export default function Dress() {
   const [availableColors, setAvailableColors] = useState([]);
   const [availableStyles, setAvailableStyles] = useState([]);
 
+  // Load bags from backend
   useEffect(() => {
-    const loadDresses = async () => {
+    const loadBags = async () => {
       try {
-        const res = await api.get("/products?category=dress");
+        const res = await api.get("/products?category=bag");
         let data = res.data;
 
-        // Extract available colors dynamically
+        // Extract available colors & styles dynamically
         const colors = new Set();
         const styles = new Set();
 
@@ -41,7 +42,7 @@ export default function Dress() {
       }
     };
 
-    loadDresses();
+    loadBags();
   }, []);
 
   // Filter Logic
@@ -56,11 +57,11 @@ export default function Dress() {
   return (
     <section className="min-h-screen w-full">
 
-      {/* ---- HERO BANNER SECTION ---- */}
+      {/* ---- HERO BANNER SECTION (BANNER 2) ---- */}
       <div
         className="w-full h-[60vh] md:h-screen bg-cover bg-center relative flex items-center"
         style={{
-          backgroundImage: `url(${Banners[0]})`, // <-- Banner1
+          backgroundImage: `url(${Banners[1]})`, // <-- Banner2
         }}
       >
         <div className="relative max-w-6xl mx-auto w-full px-6 md:px-10 flex items-center justify-end h-full">
@@ -71,11 +72,11 @@ export default function Dress() {
             className="text-right max-w-md md:max-w-lg"
           >
             <h1 className="font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl drop-shadow-lg">
-              Dresses
+              Bags
             </h1>
             <p className="mt-4 text-white/90 text-sm sm:text-base md:text-lg leading-relaxed drop-shadow-md">
-              Explore premium dresses for every occasion — elegant, modern,
-              timeless.
+              Explore premium handbags, clutches, totes, and more — elegant,
+              stylish, and crafted for every occasion.
             </p>
           </motion.div>
         </div>
@@ -88,7 +89,7 @@ export default function Dress() {
         <select
           value={selectedColor}
           onChange={(e) => setSelectedColor(e.target.value)}
-          className="bg-white/10 headind-text px-4 py-3 rounded-lg border border-white/10 backdrop-blur-sm heading-text font-medium"
+          className="bg-white/10 px-4 py-3 rounded-lg border border-white/10 backdrop-blur-sm heading-text font-medium"
         >
           <option value="">Filter by Color</option>
           {availableColors.map((c) => (
@@ -102,7 +103,7 @@ export default function Dress() {
         <select
           value={selectedStyle}
           onChange={(e) => setSelectedStyle(e.target.value)}
-          className="bg-white/10 headind-text px-4 py-3 rounded-lg border border-white/10 backdrop-blur-sm heading-text font-medium"
+          className="bg-white/10 px-4 py-3 rounded-lg border border-white/10 backdrop-blur-sm heading-text font-medium"
         >
           <option value="">Filter by Style</option>
           {availableStyles.map((s) => (
@@ -112,7 +113,7 @@ export default function Dress() {
           ))}
         </select>
 
-        {/* Price Range Filter */}
+        {/* Price Filter */}
         <div className="flex flex-col items-center heading-text font-medium">
           <span className="text-sm mb-1">Max Price: Rs {maxPrice}</span>
           <input
@@ -129,7 +130,7 @@ export default function Dress() {
       {/* ---- PRODUCT GRID ---- */}
       <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
-        {/* Loading Skeletons */}
+        {/* Loading Skeleton */}
         {loading &&
           Array(8)
             .fill(0)
@@ -140,10 +141,10 @@ export default function Dress() {
               />
             ))}
 
-        {/* No Products */}
+        {/* No Products Message */}
         {!loading && filteredProducts.length === 0 && (
           <p className="text-center text-gray-300 w-full text-lg col-span-full">
-            Sorry, no dresses match your filters.
+            Sorry, no bags match your filters.
           </p>
         )}
 
@@ -157,23 +158,23 @@ export default function Dress() {
               transition={{ duration: 0.5, delay: i * 0.05 }}
               className="group cursor-pointer"
             >
-              <Link to={`/product/${product._id}`}>
+                <Link to={`/product/${product._id}`}>
+                
+              <div className="rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-xl">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="w-full h-[250px] md:h-[330px] object-cover transition duration-700 group-hover:scale-110"
+                />
+              </div>
 
-                <div className="rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-xl">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-[250px] md:h-[330px] object-cover transition duration-700 group-hover:scale-110"
-                  />
-                </div>
+              <h3 className="mt-3 font-semibold text-gray-200 group-hover:text-white uppercase tracking-wide text-[14px] heading-text-two">
+                {product.title}
+              </h3>
 
-                <h3 className="mt-3 font-semibold text-gray-200 group-hover:text-white uppercase tracking-wide text-[14px] heading-text-two">
-                  {product.title}
-                </h3>
-
-                <p className="heading-text font-bold text-sm mt-1">
-                  Rs. {product.price}
-                </p>
+              <p className="heading-text font-bold text-sm mt-1">
+                Rs. {product.price}
+              </p>
               </Link>
             </motion.div>
           ))}

@@ -1,15 +1,15 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, ShoppingBag, Menu, PhoneCall } from "lucide-react";
 import { motion } from "framer-motion";
-import MobileSidebar from "./MobileSidebar"; // <-- ADD THIS
+import MobileSidebar from "./MobileSidebar";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
-export default function CruseNavbar({ isLoggedIn = false, username = "User" }) {
+export default function CruseNavbar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { setIsCartOpen } = useCart();
-
+  const { user, logout } = useAuth(); // 🔥 REAL AUTH STATE
 
   return (
     <>
@@ -17,8 +17,8 @@ export default function CruseNavbar({ isLoggedIn = false, username = "User" }) {
       <MobileSidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        isLoggedIn={isLoggedIn}
-        username={username}
+        isLoggedIn={!!user}
+        username={user?.displayName || "Profile"}
       />
 
       <motion.nav
@@ -33,9 +33,8 @@ export default function CruseNavbar({ isLoggedIn = false, username = "User" }) {
       >
         <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
 
-          {/* LEFT — LOGO + MOBILE MENU */}
+          {/* LEFT */}
           <div className="flex items-center gap-4">
-            {/* Hamburger (hidden on desktop) */}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="md:hidden p-2 rounded-lg bg-white/80 shadow-sm"
@@ -43,8 +42,6 @@ export default function CruseNavbar({ isLoggedIn = false, username = "User" }) {
               <Menu className="w-5 h-5 text-gray-800" />
             </button>
 
-
-            {/* Brand Name */}
             <Link
               to="/"
               className="text-2xl font-extrabold tracking-wider text-gray-900"
@@ -53,46 +50,31 @@ export default function CruseNavbar({ isLoggedIn = false, username = "User" }) {
             </Link>
           </div>
 
-          {/* MIDDLE — NAV LINKS (Desktop Only) */}
+          {/* MIDDLE */}
           <div className="hidden md:flex gap-10 items-center">
-            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/">
-              Home
-            </Link>
-            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/ai-stylist">
-              AI Stylist
-            </Link>
-            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/dress">
-              Women
-            </Link>
-            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/bags">
-              Bags
-            </Link>
-            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/shoes">
-              Shoes
-            </Link>
-            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/about">
-              About
-            </Link>
+            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/">Home</Link>
+            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/ai-stylist">AI Stylist</Link>
+            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/dress">Women</Link>
+            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/bags">Bags</Link>
+            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/shoes">Shoes</Link>
+            <Link className="text-gray-800 text-sm hover:opacity-70 transition" to="/about">About</Link>
           </div>
 
-          {/* RIGHT — ICONS */}
+          {/* RIGHT */}
           <div className="flex items-center gap-6">
 
-            {/* MOBILE: Search + Cart ONLY */}
+            {/* MOBILE ICONS */}
             <div className="flex md:hidden items-center gap-4">
               <Link to="/search">
                 <Search className="w-5 h-5 text-gray-900 hover:scale-110 transition" />
               </Link>
 
-              <button
-                onClick={() => setIsCartOpen(true)}
-                className="relative cursor-pointer"
-              >
+              <button onClick={() => setIsCartOpen(true)}>
                 <ShoppingBag className="w-5 h-5 text-gray-900 hover:scale-110 transition" />
               </button>
             </div>
 
-            {/* DESKTOP: All Icons */}
+            {/* DESKTOP ICONS */}
             <div className="hidden md:flex items-center gap-6">
               <Link to="/search">
                 <Search className="w-5 h-5 text-gray-900 hover:scale-110 transition" />
@@ -102,28 +84,34 @@ export default function CruseNavbar({ isLoggedIn = false, username = "User" }) {
                 <PhoneCall className="w-5 h-5 text-gray-900 hover:scale-110 transition" />
               </Link>
 
-              <button
-                onClick={() => setIsCartOpen(true)}
-                className="relative cursor-pointer"
-              >
+              <button onClick={() => setIsCartOpen(true)}>
                 <ShoppingBag className="w-5 h-5 text-gray-900 hover:scale-110 transition" />
               </button>
 
-
-              {isLoggedIn ? (
+              {/* 🔐 AUTH BUTTON */}
+              {!user ? (
                 <Link
-                  to="/profile"
-                  className="px-4 py-2 rounded-full bg-black text-white text-sm hover:bg-gray-800 transition"
-                >
-                  {username}
-                </Link>
-              ) : (
-                <Link
-                  to="/sign-up"
+                  to="/login"
                   className="px-4 py-2 rounded-full bg-black text-white text-sm hover:bg-gray-800 transition"
                 >
                   Login
                 </Link>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Link
+                    to="/profile"
+                    className="px-4 py-2 rounded-full bg-black text-white text-sm hover:bg-gray-800 transition"
+                  >
+                    {user.displayName || "Profile"}
+                  </Link>
+
+                  <button
+                    onClick={logout}
+                    className="text-sm text-gray-700 hover:underline"
+                  >
+                    Logout
+                  </button>
+                </div>
               )}
             </div>
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import api from "../api/api";
-import { Banners } from "../index.js";
+import api from "../../api/api.js";
+import { Banners } from "../../index.js";
 
 export default function AllProducts() {
   const [products, setProducts] = useState([]);

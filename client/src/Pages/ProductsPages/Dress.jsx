@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import api from "../api/api";
-import { Banners } from "../index.js";
+import api from "../../api/api.js";
+import { Banners } from "../../index.js";
 import { Link } from "react-router-dom";
-export default function Shoes() {
+export default function Dress() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -15,14 +15,13 @@ export default function Shoes() {
   const [availableColors, setAvailableColors] = useState([]);
   const [availableStyles, setAvailableStyles] = useState([]);
 
-  // Load shoes from backend
   useEffect(() => {
-    const loadShoes = async () => {
+    const loadDresses = async () => {
       try {
-        const res = await api.get("/products?category=shoe");
+        const res = await api.get("/products?category=dress");
         let data = res.data;
 
-        // Extract available colors & styles dynamically
+        // Extract available colors dynamically
         const colors = new Set();
         const styles = new Set();
 
@@ -42,7 +41,7 @@ export default function Shoes() {
       }
     };
 
-    loadShoes();
+    loadDresses();
   }, []);
 
   // Filter Logic
@@ -57,26 +56,26 @@ export default function Shoes() {
   return (
     <section className="min-h-screen w-full">
 
-      {/* ---- HERO BANNER SECTION (BANNER 3) ---- */}
+      {/* ---- HERO BANNER SECTION ---- */}
       <div
         className="w-full h-[60vh] md:h-screen bg-cover bg-center relative flex items-center"
         style={{
-          backgroundImage: `url(${Banners[2]})`, // <-- Banner 3
+          backgroundImage: `url(${Banners[0]})`, // <-- Banner1
         }}
       >
-        <div className="relative max-w-6xl mx-auto w-full px-6 md:px-10 flex items-center justify-start h-full">
+        <div className="relative max-w-6xl mx-auto w-full px-6 md:px-10 flex items-center justify-end h-full">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7 }}
-            className="text-left max-w-md md:max-w-lg"
+            className="text-right max-w-md md:max-w-lg"
           >
             <h1 className="font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl drop-shadow-lg">
-              Shoes
+              Dresses
             </h1>
             <p className="mt-4 text-white/90 text-sm sm:text-base md:text-lg leading-relaxed drop-shadow-md">
-              Explore premium khussas, heels, and footwear — crafted with comfort,
-              beauty, and elegance for every occasion.
+              Explore premium dresses for every occasion — elegant, modern,
+              timeless.
             </p>
           </motion.div>
         </div>
@@ -89,7 +88,7 @@ export default function Shoes() {
         <select
           value={selectedColor}
           onChange={(e) => setSelectedColor(e.target.value)}
-          className="bg-white/10 px-4 py-3 rounded-lg border border-white/10 backdrop-blur-sm heading-text font-medium"
+          className="bg-white/10 headind-text px-4 py-3 rounded-lg border border-white/10 backdrop-blur-sm heading-text font-medium"
         >
           <option value="">Filter by Color</option>
           {availableColors.map((c) => (
@@ -103,7 +102,7 @@ export default function Shoes() {
         <select
           value={selectedStyle}
           onChange={(e) => setSelectedStyle(e.target.value)}
-          className="bg-white/10 px-4 py-3 rounded-lg border border-white/10 backdrop-blur-sm heading-text font-medium"
+          className="bg-white/10 headind-text px-4 py-3 rounded-lg border border-white/10 backdrop-blur-sm heading-text font-medium"
         >
           <option value="">Filter by Style</option>
           {availableStyles.map((s) => (
@@ -130,7 +129,7 @@ export default function Shoes() {
       {/* ---- PRODUCT GRID ---- */}
       <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
-        {/* Loading Skeleton */}
+        {/* Loading Skeletons */}
         {loading &&
           Array(8)
             .fill(0)
@@ -144,7 +143,7 @@ export default function Shoes() {
         {/* No Products */}
         {!loading && filteredProducts.length === 0 && (
           <p className="text-center text-gray-300 w-full text-lg col-span-full">
-            Sorry, no shoes match your filters.
+            Sorry, no dresses match your filters.
           </p>
         )}
 

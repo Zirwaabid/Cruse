@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import api from "../api/api";
-import { Banners } from "../index.js";
+import api from "../../api/api.js";
+import { Banners } from "../../index.js";
 import { Link } from "react-router-dom";
-export default function Bags() {
+export default function Shoes() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -15,11 +15,11 @@ export default function Bags() {
   const [availableColors, setAvailableColors] = useState([]);
   const [availableStyles, setAvailableStyles] = useState([]);
 
-  // Load bags from backend
+  // Load shoes from backend
   useEffect(() => {
-    const loadBags = async () => {
+    const loadShoes = async () => {
       try {
-        const res = await api.get("/products?category=bag");
+        const res = await api.get("/products?category=shoe");
         let data = res.data;
 
         // Extract available colors & styles dynamically
@@ -42,7 +42,7 @@ export default function Bags() {
       }
     };
 
-    loadBags();
+    loadShoes();
   }, []);
 
   // Filter Logic
@@ -57,26 +57,26 @@ export default function Bags() {
   return (
     <section className="min-h-screen w-full">
 
-      {/* ---- HERO BANNER SECTION (BANNER 2) ---- */}
+      {/* ---- HERO BANNER SECTION (BANNER 3) ---- */}
       <div
         className="w-full h-[60vh] md:h-screen bg-cover bg-center relative flex items-center"
         style={{
-          backgroundImage: `url(${Banners[1]})`, // <-- Banner2
+          backgroundImage: `url(${Banners[2]})`, // <-- Banner 3
         }}
       >
-        <div className="relative max-w-6xl mx-auto w-full px-6 md:px-10 flex items-center justify-end h-full">
+        <div className="relative max-w-6xl mx-auto w-full px-6 md:px-10 flex items-center justify-start h-full">
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7 }}
-            className="text-right max-w-md md:max-w-lg"
+            className="text-left max-w-md md:max-w-lg"
           >
             <h1 className="font-extrabold uppercase text-white text-3xl sm:text-4xl md:text-5xl drop-shadow-lg">
-              Bags
+              Shoes
             </h1>
             <p className="mt-4 text-white/90 text-sm sm:text-base md:text-lg leading-relaxed drop-shadow-md">
-              Explore premium handbags, clutches, totes, and more — elegant,
-              stylish, and crafted for every occasion.
+              Explore premium khussas, heels, and footwear — crafted with comfort,
+              beauty, and elegance for every occasion.
             </p>
           </motion.div>
         </div>
@@ -113,7 +113,7 @@ export default function Bags() {
           ))}
         </select>
 
-        {/* Price Filter */}
+        {/* Price Range Filter */}
         <div className="flex flex-col items-center heading-text font-medium">
           <span className="text-sm mb-1">Max Price: Rs {maxPrice}</span>
           <input
@@ -141,10 +141,10 @@ export default function Bags() {
               />
             ))}
 
-        {/* No Products Message */}
+        {/* No Products */}
         {!loading && filteredProducts.length === 0 && (
           <p className="text-center text-gray-300 w-full text-lg col-span-full">
-            Sorry, no bags match your filters.
+            Sorry, no shoes match your filters.
           </p>
         )}
 
@@ -158,23 +158,23 @@ export default function Bags() {
               transition={{ duration: 0.5, delay: i * 0.05 }}
               className="group cursor-pointer"
             >
-                <Link to={`/product/${product._id}`}>
-                
-              <div className="rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-xl">
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-full h-[250px] md:h-[330px] object-cover transition duration-700 group-hover:scale-110"
-                />
-              </div>
+              <Link to={`/product/${product._id}`}>
 
-              <h3 className="mt-3 font-semibold text-gray-200 group-hover:text-white uppercase tracking-wide text-[14px] heading-text-two">
-                {product.title}
-              </h3>
+                <div className="rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-xl">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="w-full h-[250px] md:h-[330px] object-cover transition duration-700 group-hover:scale-110"
+                  />
+                </div>
 
-              <p className="heading-text font-bold text-sm mt-1">
-                Rs. {product.price}
-              </p>
+                <h3 className="mt-3 font-semibold text-gray-200 group-hover:text-white uppercase tracking-wide text-[14px] heading-text-two">
+                  {product.title}
+                </h3>
+
+                <p className="heading-text font-bold text-sm mt-1">
+                  Rs. {product.price}
+                </p>
               </Link>
             </motion.div>
           ))}
