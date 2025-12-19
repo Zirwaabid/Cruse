@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 const firebaseConfig = {
-  apiKey: "AIzaSyCzVUVVCQUaDHSGs0S9ILE1rM8m3iW6Vo4",
+  apiKey: import.meta.env?.VITE_FIREBASE_API_KEY,
   authDomain: "cruse-d5eba.firebaseapp.com",
   projectId: "cruse-d5eba",
   storageBucket: "cruse-d5eba.firebasestorage.app",

@@ -10,13 +10,13 @@ import { auth } from "../firebase/firebase";
 import { useNavigate, Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { FcGoogle } from "react-icons/fc";
+import toast from "react-hot-toast"; // ✅ ADD THIS
 
 export default function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -25,7 +25,6 @@ export default function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    setError(null);
 
     try {
       const res = await createUserWithEmailAndPassword(
@@ -39,14 +38,15 @@ export default function Signup() {
         displayName: `${firstName} ${lastName}`,
       });
 
+      toast.success("Account created successfully!");
       navigate("/");
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
-        setError("Account already exists. Please login.");
+        toast.error("Account already exists. Please login.");
       } else if (err.code === "auth/weak-password") {
-        setError("Password should be at least 6 characters.");
+        toast.error("Password should be at least 6 characters.");
       } else {
-        setError(err.message);
+        toast.error("Something went wrong. Please try again.");
       }
     }
   };
@@ -55,9 +55,10 @@ export default function Signup() {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
+      toast.success("Signed up with Google!");
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      toast.error("Google signup failed. Try again.");
     }
   };
 
@@ -71,12 +72,6 @@ export default function Signup() {
         <p className="text-center text-sm text-gray-500 mb-6">
           Create your account to begin your journey.
         </p>
-
-        {error && (
-          <div className="mb-4 rounded-lg bg-red-50 text-red-600 text-sm px-4 py-2">
-            {error}
-          </div>
-        )}
 
         <form onSubmit={handleSignup} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">

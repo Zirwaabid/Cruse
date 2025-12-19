@@ -13,21 +13,21 @@ import CartPage from './Pages/CartPage'
 import CartSidebar from './Components/CartSidebar'
 import ProductDetails from './Pages/ProductsPages/ProductDetails'
 import ContactUs from './Pages/ContactUs'
-
 import AiTestClient from './Pages/AiTestClient'
-
 import { AuthProvider } from './context/AuthContext'
-import { LogIn } from 'lucide-react'
 import { ProtectedRoute } from './Routes/ProtectedRoutes'
 import Profile from './Pages/Profile'
 import Login from './Pages/Login'
 import Signup from './Pages/Signup'
+import ToastProvider from './Ui/ToastProvider'
 
 function App() {
 
   return (
     <>
       <div className="min-h-screen relative ">
+
+        <ToastProvider />
         {/* <BrowserRouter> */}
         <AuthProvider>
 
@@ -50,17 +50,12 @@ function App() {
               path="/profile"
               element={
                 <ProtectedRoute>
-
                   <Profile />
                 </ProtectedRoute>
-
               }
             />
-
           </Routes>
-
           <Footer />
-
         </AuthProvider>
 
         {/* </BrowserRouter> */}

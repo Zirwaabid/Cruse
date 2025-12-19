@@ -9,11 +9,11 @@ import { auth } from "../firebase/firebase";
 import { useNavigate, Navigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { FcGoogle } from "react-icons/fc";
+import toast from "react-hot-toast"; // ✅ ADD THIS
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -23,18 +23,18 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(null);
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      toast.success("Welcome back!"); // ✅ SUCCESS TOAST
       navigate("/");
     } catch (err) {
       if (err.code === "auth/user-not-found") {
-        setError("No account found. Please sign up.");
+        toast.error("No account found. Please sign up.");
       } else if (err.code === "auth/wrong-password") {
-        setError("Incorrect password.");
+        toast.error("Incorrect password.");
       } else {
-        setError(err.message);
+        toast.error("Something went wrong. Please try again.");
       }
     }
   };
@@ -43,14 +43,15 @@ export default function Login() {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
+      toast.success("Logged in successfully!");
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      toast.error("Google login failed. Try again.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center   px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-white">
       <div className="w-full max-w-md rounded-2xl bg-white/80 backdrop-blur-xl shadow-xl p-8">
 
         {/* BRAND */}
@@ -60,13 +61,6 @@ export default function Login() {
         <p className="text-center text-sm text-gray-500 mb-6">
           Welcome back. Please login to continue.
         </p>
-
-        {/* ERROR */}
-        {error && (
-          <div className="mb-4 rounded-lg bg-red-50 text-red-600 text-sm px-4 py-2">
-            {error}
-          </div>
-        )}
 
         {/* FORM */}
         <form onSubmit={handleLogin} className="space-y-4">
