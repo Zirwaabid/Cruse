@@ -20,6 +20,7 @@ import Profile from './Pages/Profile'
 import Login from './Pages/Login'
 import Signup from './Pages/Signup'
 import ToastProvider from './Ui/ToastProvider'
+import { CartProvider } from './context/CartContext'
 
 function App() {
 
@@ -27,10 +28,10 @@ function App() {
     <>
       <div className="min-h-screen relative ">
 
-        <ToastProvider />
-        {/* <BrowserRouter> */}
+        
         <AuthProvider>
-
+<CartProvider>
+        <ToastProvider />
           <TopSidebar />
           <CartSidebar />
           <ScrollToTop />
@@ -56,9 +57,10 @@ function App() {
             />
           </Routes>
           <Footer />
+          </CartProvider>
         </AuthProvider>
 
-        {/* </BrowserRouter> */}
+       
       </div>
     </>
   )

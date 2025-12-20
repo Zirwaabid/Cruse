@@ -1,75 +1,139 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";// import your auth context
+import { toast } from "react-hot-toast";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
+import { db } from "../firebase/firebase"; // your firestore instance
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState(() => {
-    // load cart from localStorage
-    const saved = localStorage.getItem("cart");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const { user, loading } = useAuth();
 
+  console.log("CartProvider user:", user);
+
+  const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-
-  // Save to localStorage every time cart changes
+  
+  // ---------------------------
+  // FETCH CART FROM FIRESTORE ON LOGIN
+  // ---------------------------
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
+  if (loading) return; // 
 
-  // ---------------------------
-  // ADD TO CART (MERGE ITEMS)
-  // ---------------------------
-  const addToCart = (product) => {
-    setCartItems((prev) => {
-      const existingItem = prev.find((item) => item._id === product._id);
+  const fetchCart = async () => {
+    if (user) {
+      try {
+        const docRef = doc(db, "carts", user.uid);
+        const docSnap = await getDoc(docRef);
 
-      if (existingItem) {
-        // increase quantity if item already exists
-        return prev.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
+        if (docSnap.exists()) {
+          setCartItems(docSnap.data().items || []);
+        } else {
+          await setDoc(docRef, {
+            userId: user.uid,
+            items: [],
+          });
+          setCartItems([]);
+        }
+      } catch (err) {
+        console.error("Error fetching cart:", err);
       }
-
-      // add new item with quantity 1
-      return [...prev, { ...product, quantity: 1 }];
-    });
-
-    setIsCartOpen(true); // auto-open sidebar on add
+    } else {
+      setCartItems([]);
+    }
   };
+
+  fetchCart();
+}, [user, loading]);
+
+
+  // ---------------------------
+  // SYNC CART TO FIRESTORE
+  // ---------------------------
+  const syncCartToFirestore = async (updatedCart) => {
+    if (user) {
+      try {
+        const docRef = doc(db, "carts", user.uid);
+        await setDoc(
+          docRef,
+          { items: updatedCart },
+          { merge: true }
+        );
+
+      } catch (err) {
+        console.error("Error syncing cart:", err);
+      }
+    }
+  };
+
+  // ---------------------------
+  // ADD TO CART (CHECK LOGIN)
+  // ---------------------------
+  const addToCart = async (product) => {
+  if (!user) {
+    toast.error("Please login before adding items to cart");
+    return;
+  }
+
+  let newCart;
+
+  const existingItem = cartItems.find(
+    (item) => item._id === product._id
+  );
+
+  if (existingItem) {
+    newCart = cartItems.map((item) =>
+      item._id === product._id
+        ? { ...item, quantity: item.quantity + 1 }
+        : item
+    );
+  } else {
+    newCart = [...cartItems, { ...product, quantity: 1 }];
+  }
+
+  setCartItems(newCart);
+  await syncCartToFirestore(newCart);
+  setIsCartOpen(true);
+};
 
   // ---------------------------
   // REMOVE COMPLETELY
   // ---------------------------
   const removeFromCart = (id) => {
-    setCartItems((prev) => prev.filter((item) => item._id !== id));
+    const updatedCart = cartItems.filter((item) => item._id !== id);
+    setCartItems(updatedCart);
+    syncCartToFirestore(updatedCart);
   };
 
   // ---------------------------
   // INCREASE QUANTITY
   // ---------------------------
   const increaseQuantity = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item._id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
+    const updatedCart = cartItems.map((item) =>
+      item._id === id ? { ...item, quantity: item.quantity + 1 } : item
     );
+    setCartItems(updatedCart);
+    syncCartToFirestore(updatedCart);
   };
 
   // ---------------------------
   // DECREASE QUANTITY
   // ---------------------------
   const decreaseQuantity = (id) => {
-    setCartItems((prev) =>
-      prev
-        .map((item) =>
-          item._id === id
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        )
-        .filter((item) => item.quantity > 0) // remove if quantity becomes 0
-    );
+    const updatedCart = cartItems
+      .map((item) =>
+        item._id === id ? { ...item, quantity: item.quantity - 1 } : item
+      )
+      .filter((item) => item.quantity > 0);
+    setCartItems(updatedCart);
+    syncCartToFirestore(updatedCart);
   };
 
   // ---------------------------

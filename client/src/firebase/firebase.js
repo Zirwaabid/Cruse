@@ -1,13 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore"; 
 const firebaseConfig = {
   apiKey: import.meta.env?.VITE_FIREBASE_API_KEY,
-  authDomain: "cruse-d5eba.firebaseapp.com",
-  projectId: "cruse-d5eba",
-  storageBucket: "cruse-d5eba.firebasestorage.app",
-  messagingSenderId: "145816572184",
-  appId: "1:145816572184:web:3b2a2cd047e2de887a8e6d",
-  measurementId: "G-J18Q0BVQT2"
+  authDomain: "cruse-native.firebaseapp.com",
+  projectId: "cruse-native",
+  storageBucket: "cruse-native.firebasestorage.app",
+  messagingSenderId: "1072524532866",
+  appId: "1:1072524532866:web:59a92cf4bbc1a6fb6fa89b",
+  measurementId: "G-Q8D5B13ZN2"
 };
 
 // Initialize Firebase
@@ -15,6 +16,7 @@ const app = initializeApp(firebaseConfig);
 
 // 🔑 Initialize Auth
 export const auth = getAuth(app);
-
+// Initialize Firestore
+export const db = getFirestore(app);
 // (Optional) export app if needed later
 export default app;
