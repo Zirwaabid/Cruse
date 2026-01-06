@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import api from "../../api/api.js";
 import { Banners } from "../../index.js";
-
+import { Link } from "react-router-dom";
 export default function AllProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -119,17 +119,19 @@ export default function AllProducts() {
               transition={{ duration: 0.5, delay: i * 0.05 }}
               className="group cursor-pointer"
             >
+              <Link to={`/product/${product._id}`}>
               <div className="rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-xl">
                 <img
                   src={product.image}
                   alt={product.title}
                   className="w-full h-[250px] md:h-[330px] object-cover transition duration-700 group-hover:scale-110"
-                />
+                  />
               </div>
 
               <h3 className="mt-3 font-semibold text-gray-200 group-hover:text-white uppercase tracking-wide text-[14px] heading-text-two">
                 {product.title}
               </h3>
+                  </Link>
 
               <p className="heading-text font-bold text-sm mt-1">Rs. {product.price}</p>
             </motion.div>

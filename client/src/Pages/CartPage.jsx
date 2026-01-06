@@ -1,6 +1,6 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
-import {Trash} from "lucide-react";
+import { Trash } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function CartPage() {
@@ -24,7 +24,7 @@ export default function CartPage() {
         {/* LEFT SECTION */}
         <div className="lg:col-span-2 space-y-4">
           <h1 className="text-2xl sm:text-3xl font-bold heading-text">Your Cart</h1>
-       
+
 
           {cartItems.length === 0 ? (
             <p className="text-gray-500 text-lg">Your cart is empty</p>
@@ -62,9 +62,9 @@ export default function CartPage() {
                     </div>
 
                     {/* Remove Button */}
-                <button onClick={() => removeFromCart(item._id)}>
-                  <Trash className="w-3 h-3 text-gray-600 hover:text-black cursor-pointer" />
-                </button>
+                    <button onClick={() => removeFromCart(item._id)}>
+                      <Trash className="w-3 h-3 text-gray-600 hover:text-black cursor-pointer" />
+                    </button>
                   </div>
                   {/* QUANTITY BOX */}
                   {/* QUANTITY BOX */}
@@ -128,7 +128,7 @@ export default function CartPage() {
               to="/checkout"
               className="block mt-5 button-bg text-white text-center py-2 rounded-lg text-md font-medium hover:bg-gray-800 transition"
             >
-              Checkout 
+              Checkout
             </Link>
           </div>
         </div>

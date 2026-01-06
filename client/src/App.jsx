@@ -21,6 +21,8 @@ import Login from './Pages/Login'
 import Signup from './Pages/Signup'
 import ToastProvider from './Ui/ToastProvider'
 import { CartProvider } from './context/CartContext'
+import AddressStep from './Pages/CheckOut/AddressStep'
+import CheckoutPage from './Pages/CheckOut/CheckoutPage'
 
 function App() {
 
@@ -28,39 +30,47 @@ function App() {
     <>
       <div className="min-h-screen relative ">
 
-        
+
         <AuthProvider>
-<CartProvider>
-        <ToastProvider />
-          <TopSidebar />
-          <CartSidebar />
-          <ScrollToTop />
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/products" element={<AllProducts />} />
-            <Route path="/dress" element={<Dress />} />
-            <Route path="/shoes" element={<Shoes />} />
-            <Route path="/bags" element={<Bags />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/ai-stylist" element={<AiTestClient />} />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-          <Footer />
+          <CartProvider>
+            <ToastProvider />
+            <TopSidebar />
+            <CartSidebar />
+            <ScrollToTop />
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/products" element={<AllProducts />} />
+              <Route path="/dress" element={<Dress />} />
+              <Route path="/shoes" element={<Shoes />} />
+              <Route path="/bags" element={<Bags />} />
+              <Route path="/product/:id" element={<ProductDetails />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/contact-us" element={<ContactUs />} />
+              <Route path="/ai-stylist" element={<AiTestClient />} />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+               <Route
+                path="/checkout"
+                element={
+                  <ProtectedRoute>
+                 <CheckoutPage/>
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+            <Footer />
           </CartProvider>
         </AuthProvider>
 
-       
+
       </div>
     </>
   )
