@@ -1,14 +1,54 @@
 import mongoose from "mongoose";
 
-const orderSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  items: Array,
-  total: Number,
-  paymentMethod: String,
-  paymentStatus: { type: String, default: "pending" },
-  address: Object,
-  status: { type: String, default: "on the way" },
-  createdAt: { type: Date, default: Date.now },
-});
+const orderSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: String, // Firebase UID
+      required: true,
+    },
+
+    items: [
+      {
+        productId: String,
+        name: String,
+        price: Number,
+        quantity: Number,
+      },
+    ],
+
+    address: {
+      name: String,
+      email: String,
+      phone: String,
+      city: String,
+      state: String,
+      zip: String,
+      country: String,
+    },
+
+    paymentMethod: {
+      type: String,
+      enum: ["cod", "online"],
+      required: true,
+    },
+
+    paymentStatus: {
+      type: String,
+      enum: ["pending", "paid"],
+      default: "pending",
+    },
+
+    paymentIntentId: String,
+
+    totalAmount: Number,
+
+    orderStatus: {
+      type: String,
+      enum: ["processing", "on_the_way", "delivered"],
+      default: "processing",
+    },
+  },
+  { timestamps: true }
+);
 
 export default mongoose.model("Order", orderSchema);

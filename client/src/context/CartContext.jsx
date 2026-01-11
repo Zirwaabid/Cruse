@@ -10,7 +10,7 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase"; // your firestore instance
-
+import { clearFirestoreCart } from "../firebase/cartService";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -151,6 +151,15 @@ export const CartProvider = ({ children }) => {
     (count, item) => count + item.quantity,
     0
   );
+  //  CLEAR CART 
+const clearCart = async () => {
+  if (user?.uid) {
+    await clearFirestoreCart(user.uid);
+  }
+
+  setCartItems([]);
+  localStorage.removeItem("cart");
+};
 
   return (
     <CartContext.Provider
@@ -164,6 +173,7 @@ export const CartProvider = ({ children }) => {
         cartCount,
         isCartOpen,
         setIsCartOpen,
+        clearCart
       }}
     >
       {children}

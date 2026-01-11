@@ -4,8 +4,8 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import productRoutes from './routes/productRoutes.js'
 import aiRoutes from './routes/aiRoutes.js'
-
-
+import paymentRoutes from './routes/paymentRoutes.js'
+import orderRoutes from './routes/orderRoutes.js'
 dotenv.config();
 const app = express();
 
@@ -19,6 +19,8 @@ connectDB();
 // Routes
 app.use("/api/products", productRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/payment", paymentRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running...");
