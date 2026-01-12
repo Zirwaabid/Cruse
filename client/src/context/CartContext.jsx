@@ -16,7 +16,7 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const { user, loading } = useAuth();
 
-  console.log("CartProvider user:", user);
+
 
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
