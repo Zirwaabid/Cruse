@@ -11,6 +11,9 @@ import { useNavigate, Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast"; // ✅ ADD THIS
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase/firebase";
+
 
 export default function Signup() {
   const [firstName, setFirstName] = useState("");
@@ -33,9 +36,18 @@ export default function Signup() {
         password
       );
 
-      // ✅ Save full name in Firebase profile
+      // Save name in Firebase Auth profile
       await updateProfile(res.user, {
         displayName: `${firstName} ${lastName}`,
+      });
+
+      // 🔐 SAVE USER IN FIRESTORE (ROLE = user)
+      await setDoc(doc(db, "users", res.user.uid), {
+        uid: res.user.uid,
+        email: res.user.email,
+        name: `${firstName} ${lastName}`,
+        role: "user",
+        createdAt: serverTimestamp(),
       });
 
       toast.success("Account created successfully!");
@@ -51,6 +63,7 @@ export default function Signup() {
     }
   };
 
+
   const handleGoogleSignup = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -63,7 +76,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-neutral-100 to-neutral-200 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-neutral-100 to-neutral-200 px-4">
       <div className="w-full max-w-md rounded-2xl bg-white/80 backdrop-blur-xl shadow-xl p-8">
 
         <h1 className="text-3xl font-extrabold tracking-widest text-center mb-2">
