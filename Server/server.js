@@ -6,6 +6,7 @@ import productRoutes from './routes/productRoutes.js'
 import aiRoutes from './routes/aiRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
+import adminProductRoutes from "./routes/adminProductRoutes.js";
 dotenv.config();
 const app = express();
 
@@ -16,11 +17,13 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 // Connect Database
 connectDB();
 
-// Routes
+//user Routes
 app.use("/api/products", productRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/orders", orderRoutes);
+// admin routes 
+app.use("/api/admin/products", adminProductRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running...");

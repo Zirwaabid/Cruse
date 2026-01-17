@@ -58,6 +58,8 @@ export const AuthProvider = ({ children }) => {
   // 🔐 LOGIN
   const loginUser = (email, password) =>
     signInWithEmailAndPassword(auth, email, password);
+  
+
 
   // 🚪 LOGOUT
   const logout = async () => {

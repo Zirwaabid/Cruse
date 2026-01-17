@@ -35,14 +35,4 @@ export const getFamousProducts = async (req, res) => {
 };
 
 
-// Add product (admin)
-export const addProduct = async (req, res) => {
-  try {
-    const product = new Product(req.body);
-    const saved = await product.save();
-    res.status(201).json(saved);
-  } catch (error) {
-    res.status(500).json({ message: "Error adding product" });
-  }
-};
 
