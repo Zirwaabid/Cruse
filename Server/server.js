@@ -7,6 +7,8 @@ import aiRoutes from './routes/aiRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import adminProductRoutes from "./routes/adminProductRoutes.js";
+import adminOrderRoutes from "./routes/adminOrderRoutes.js";
+import adminUserRoutes from "./routes/adminUserRoutes.js";
 dotenv.config();
 const app = express();
 
@@ -24,6 +26,8 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/orders", orderRoutes);
 // admin routes 
 app.use("/api/admin/products", adminProductRoutes);
+app.use("/api/admin/orders", adminOrderRoutes);
+app.use("/api/admin/users", adminUserRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running...");

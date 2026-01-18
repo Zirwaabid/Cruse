@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema(
         quantity: Number,
           image: String,
            description: String,
-           color: [String],
+           color: String,
       },
     ],
 
@@ -47,7 +47,7 @@ const orderSchema = new mongoose.Schema(
 
     orderStatus: {
       type: String,
-      enum: ["processing", "on_the_way", "delivered"],
+      enum: ["pending", "confirmed", "shipped", "delivered", "cancelled"],
       default: "processing",
     },
   },

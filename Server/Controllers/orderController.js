@@ -21,8 +21,18 @@ export const createOrder = async (req, res) => {
 
     for (const item of cartItems) {
       const product = await Product.findById(item._id);
-      if (!product) continue;
+       if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
 
+ if (product.stock < item.quantity) {
+        return res
+          .status(400)
+          .json({ message: `${product.title} out of stock` });
+      }
+      // 🔻 Reduce stock (CRITICAL)
+      product.stock -= item.quantity;
+      await product.save();
       totalAmount += product.price * item.quantity;
 
       items.push({
@@ -62,20 +72,3 @@ export const getUserOrders = async (req, res) => {
 
 
 
-// export const deleteAllOrders = async (req, res) => {
-//   try {
-//     const result = await Order.deleteMany({});
-
-//     res.status(200).json({
-//       success: true,
-//       message: "All orders deleted successfully",
-//       deletedCount: result.deletedCount,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Failed to delete orders",
-//       error: error.message,
-//     });
-//   }
-// };
