@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
@@ -16,10 +15,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
-  const { user } = useAuth();
-
-  // 🔐 Redirect if already logged in
-  if (user) return <Navigate to="/" replace />;
+  const { user, role } = useAuth();
+  console.log(role)
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,7 +24,6 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("Welcome back!"); // ✅ SUCCESS TOAST
-      navigate("/");
     } catch (err) {
       if (err.code === "auth/user-not-found") {
         toast.error("No account found. Please sign up.");
@@ -49,6 +45,16 @@ export default function Login() {
       toast.error("Google login failed. Try again.");
     }
   };
+  useEffect(() => {
+  if (!user || !role) return;
+
+  if (role === "admin") {
+    navigate("/admin", { replace: true });
+  } else {
+    navigate("/", { replace: true });
+  }
+}, [user, role]);
+
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-white">

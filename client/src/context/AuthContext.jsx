@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null); // 🔥 Firestore profile
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState(null);
   // 🔐 Auth state listener
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -24,7 +25,13 @@ export const AuthProvider = ({ children }) => {
         const userDoc = await getDoc(doc(db, "users", currentUser.uid));
         setUserData(userDoc.exists() ? userDoc.data() : null);
         console.log(userDoc.data().role)
-       
+       if (userDoc.exists()) {
+  setRole(userDoc.data().role);
+} else {
+  setRole("user");
+}
+
+
       } else {
         setUser(null);
         setUserData(null);
@@ -58,7 +65,7 @@ export const AuthProvider = ({ children }) => {
   // 🔐 LOGIN
   const loginUser = (email, password) =>
     signInWithEmailAndPassword(auth, email, password);
-  
+
 
 
   // 🚪 LOGOUT
@@ -70,6 +77,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        role,
         userData,
         loading,
         registerUser,
@@ -77,6 +85,7 @@ export const AuthProvider = ({ children }) => {
         logout,
       }}
     >
+      {console.log(role)}
       {!loading && children}
     </AuthContext.Provider>
   );

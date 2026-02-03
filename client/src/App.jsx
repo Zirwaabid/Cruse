@@ -23,7 +23,7 @@ import ToastProvider from './Ui/ToastProvider'
 import { CartProvider } from './context/CartContext'
 import AddressStep from './Pages/CheckOut/AddressStep'
 import CheckoutPage from './Pages/CheckOut/CheckoutPage'
-
+import AppRoutes from './Routes/AppRoutes'
 function App() {
 
   return (
@@ -66,6 +66,7 @@ function App() {
                 }
               />
             </Routes>
+            <AppRoutes/>
             <Footer />
           </CartProvider>
         </AuthProvider>
