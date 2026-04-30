@@ -13,7 +13,6 @@ import CartPage from './Pages/CartPage'
 import CartSidebar from './Components/CartSidebar'
 import ProductDetails from './Pages/ProductsPages/ProductDetails'
 import ContactUs from './Pages/ContactUs'
-import AiTestClient from './Pages/AiTestClient'
 import { AuthProvider } from './context/AuthContext'
 import { ProtectedRoute } from './Routes/ProtectedRoutes'
 import Profile from './Pages/Profile'
@@ -48,7 +47,7 @@ function App() {
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/contact-us" element={<ContactUs />} />
-              <Route path="/ai-stylist" element={<AiTestClient />} />
+           
               <Route
                 path="/profile"
                 element={

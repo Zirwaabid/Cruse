@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import productRoutes from './routes/productRoutes.js'
-import aiRoutes from './routes/aiRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import adminProductRoutes from "./routes/adminProductRoutes.js";
@@ -21,7 +20,6 @@ connectDB();
 
 //user Routes
 app.use("/api/products", productRoutes);
-app.use("/api/ai", aiRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/orders", orderRoutes);
 // admin routes 
