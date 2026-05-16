@@ -1,6 +1,6 @@
 import express from "express";
-import stripe from "../config/stripe.js";
-import Product from "../models/Product.js";
+import stripe from "../../config/stripe.js";
+import Product from "../../models/Product.js";
 export const getPayments = async (req, res) => {
      console.log("BODY RECEIVED:", req.body);
     try {

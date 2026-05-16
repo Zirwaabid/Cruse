@@ -3,10 +3,10 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
-} from "../Controllers/adminProductController.js";
+} from "../../Controllers/adminControllers/adminProductController.js";
 
-import upload from '../middleware/upload.js';
-import { adminOnly } from "../middleware/adminMiddleware.js";
+import upload from '../../middleware/upload.js';
+import { adminOnly } from "../../middleware/adminMiddleware.js";
 
 const router = express.Router();
 

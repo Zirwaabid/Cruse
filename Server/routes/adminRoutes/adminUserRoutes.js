@@ -3,9 +3,9 @@ import {
   getAllUsers,
   getSingleUser,
   getUserOrders,
-} from "../Controllers/adminUserController.js";
+} from "../../Controllers/adminControllers/adminUserController.js";
 
-import { adminOnly } from "../middleware/adminMiddleware.js";
+import { adminOnly } from "../../middleware/adminMiddleware.js";
 
 const router = express.Router();
 

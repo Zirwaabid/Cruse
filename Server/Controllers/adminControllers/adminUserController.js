@@ -1,5 +1,5 @@
-import admin from "../config/firebaseAdmin.js";
-import Order from "../models/order.js";
+import admin from "../../config/firebaseAdmin.js";
+import Order from "../../models/order.js";
 
 /**
  * 👥 GET ALL USERS (FROM FIRESTORE)

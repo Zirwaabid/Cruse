@@ -2,12 +2,19 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
-import productRoutes from './routes/productRoutes.js'
-import paymentRoutes from './routes/paymentRoutes.js'
-import orderRoutes from './routes/orderRoutes.js'
-import adminProductRoutes from "./routes/adminProductRoutes.js";
-import adminOrderRoutes from "./routes/adminOrderRoutes.js";
-import adminUserRoutes from "./routes/adminUserRoutes.js";
+// category routes 
+import categoryRoute from './routes/categoriesRoutes/categoryRoute.js'
+// product routes
+import productRoutes from './routes/productRoutes/productRoutes.js'
+// payment routes
+import paymentRoutes from './routes/paymentRoutes/paymentRoutes.js'
+// order route
+import orderRoutes from './routes/orderRoutes/orderRoutes.js'
+// admin routes 
+import adminProductRoutes from "./routes/adminRoutes/adminProductRoutes.js";
+import adminOrderRoutes from "./routes/adminRoutes/adminOrderRoutes.js";
+import adminUserRoutes from "./routes/adminRoutes/adminUserRoutes.js";
+
 dotenv.config();
 const app = express();
 
@@ -18,10 +25,13 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 // Connect Database
 connectDB();
 
-//user Routes
+//---user Routes
+// ---Product routes---
 app.use("/api/products", productRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/orders", orderRoutes);
+// ---Category routes---
+app.use("/api/categories", categoryRoute);
 // admin routes 
 app.use("/api/admin/products", adminProductRoutes);
 app.use("/api/admin/orders", adminOrderRoutes);
